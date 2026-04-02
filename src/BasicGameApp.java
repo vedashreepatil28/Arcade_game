@@ -13,6 +13,9 @@
 
 //Graphics Libraries
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
 import javax.swing.JFrame;
@@ -22,7 +25,7 @@ import javax.swing.JPanel;
 //*******************************************************************************
 // Class Definition Section
 
-public class BasicGameApp implements Runnable {
+public class BasicGameApp implements Runnable, KeyListener {
 
    //Variable Definition Section
    //Declare the variables used in the program 
@@ -45,6 +48,7 @@ public class BasicGameApp implements Runnable {
    //These are things that are made up of more than one variable type
 	private Astronaut astro;
     private Mario Mario1;
+    private Pipe pipe;
 
 
    // Main method definition
@@ -68,9 +72,10 @@ public class BasicGameApp implements Runnable {
 		MarioPic = Toolkit.getDefaultToolkit().getImage("mario.png"); //load the picture
         backgroundPic = Toolkit.getDefaultToolkit().getImage("background.png");
         Mario1 = new Mario(10,100);
+        pipe.1 = new Pipe(100, 500);
 
 
-	}// BasicGameApp()
+    }// BasicGameApp()
 
    
 //*******************************************************************************
@@ -119,7 +124,8 @@ public class BasicGameApp implements Runnable {
    
       // creates a canvas which is a blank rectangular area of the screen onto which the application can draw
       // and trap input events (Mouse and Keyboard events)
-      canvas = new Canvas();  
+      canvas = new Canvas();
+      canvas.addKeyListener(this);
       canvas.setBounds(0, 0, WIDTH, HEIGHT);
       canvas.setIgnoreRepaint(true);
    
@@ -153,4 +159,62 @@ public class BasicGameApp implements Runnable {
 
 		bufferStrategy.show();
 	}
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println("key typed " + e.getKeyCode());
+        if (e.getKeyCode()==38){
+            System.out.println("pressed up arrow");
+            // astro.ypos = astro.ypos-20;
+            Mario1.dy= -5;
+        }
+        if (e.getKeyCode()==40){
+            System.out.println("pressed down arrow");
+            // astro.ypos = astro.ypos-20;
+            Mario1.dy= 5;
+        }
+        if (e.getKeyCode()==39){
+            System.out.println("pressed right arrow");
+            // astro.ypos = astro.ypos-20;
+            Mario1.dx= 5;
+        }
+        if (e.getKeyCode()==37){
+            System.out.println("pressed left arrow");
+            // astro.ypos = astro.ypos-20;
+            Mario1.dx= -5;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode()==38){
+            System.out.println(" not pressed up arrow");
+            // astro.ypos = astro.ypos-20;
+            Mario1.dy= 0;
+        }
+        if (e.getKeyCode()==40){
+            System.out.println("pressed down arrow");
+            // astro.ypos = astro.ypos-20;
+            Mario1.dy= 0;
+        }
+        if (e.getKeyCode()==39){
+            System.out.println("pressed right arrow");
+            // astro.ypos = astro.ypos-20;
+            Mario1.dx= 0;
+        }
+        if (e.getKeyCode()==37){
+            System.out.println("pressed left arrow");
+            // astro.ypos = astro.ypos-20;
+            Mario1.dx= 0;
+        }
+
+    }
+
+
+
 }
