@@ -74,7 +74,7 @@ public class BasicGameApp implements Runnable, KeyListener {
         Mario1 = new Mario(10,100);
         pipe.1 = new Pipe(100, 500);
 
-
+//
     }// BasicGameApp()
 
    
