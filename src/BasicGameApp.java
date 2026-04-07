@@ -73,8 +73,12 @@ public class BasicGameApp implements Runnable, KeyListener {
         backgroundPic = Toolkit.getDefaultToolkit().getImage("background.png");
         Mario1 = new Mario(10,100);
         pipe1 = new Pipe(170, 510);
-        pipe1.height = 400;
+        pipe1.height = 200;
+        pipe1.hitbox = new Rectangle(pipe1.xpos, pipe1.ypos, pipe1.width, pipe1.height);
         pipe2 = new Pipe(570, 408);
+        pipe2.height = 400;
+        pipe2.hitbox = new Rectangle(pipe2.xpos, pipe2.ypos, pipe2.width, pipe2.height);
+
         MarioPic = Toolkit.getDefaultToolkit().getImage("mario.png"); //load the picture
 
 
@@ -174,8 +178,8 @@ public class BasicGameApp implements Runnable, KeyListener {
         g.drawImage(backgroundPic, 0, 0, WIDTH, HEIGHT, null);
         g.drawImage(MarioPic, Mario1.xpos, Mario1.ypos, Mario1.width, Mario1.height, null);
 
-        g.drawRect(pipe1.hitbox.x, pipe1.hitbox.y, pipe1.hitbox.width, 100);
-        g.drawRect(pipe2.hitbox.x, pipe2.hitbox.y, pipe2.hitbox.width, 200);
+        g.drawRect(pipe1.hitbox.x, pipe1.hitbox.y, pipe1.hitbox.width, pipe1.hitbox.height);
+        g.drawRect(pipe2.hitbox.x, pipe2.hitbox.y, pipe2.hitbox.width, pipe2.hitbox.height);
         /*gives a visual of how the hitbox looks */
         g.drawRect(Mario1.hitbox.x, Mario1.hitbox.y, Mario1.hitbox.width, Mario1.hitbox.height);
 
