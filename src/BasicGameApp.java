@@ -48,7 +48,8 @@ public class BasicGameApp implements Runnable, KeyListener {
    //These are things that are made up of more than one variable type
 	private Astronaut astro;
     private Mario Mario1;
-    private Pipe pipe;
+    private Pipe pipe1;
+    private Pipe pipe2;
 
 
    // Main method definition
@@ -69,10 +70,14 @@ public class BasicGameApp implements Runnable, KeyListener {
        
       //variable and objects
       //create (construct) the objects needed for the game and load up 
-		MarioPic = Toolkit.getDefaultToolkit().getImage("mario.png"); //load the picture
         backgroundPic = Toolkit.getDefaultToolkit().getImage("background.png");
         Mario1 = new Mario(10,100);
-        pipe.1 = new Pipe(100, 500);
+        pipe1 = new Pipe(170, 510);
+        pipe1.height = 400;
+        pipe2 = new Pipe(570, 408);
+        MarioPic = Toolkit.getDefaultToolkit().getImage("mario.png"); //load the picture
+
+
 
 //
     }// BasicGameApp()
@@ -101,8 +106,22 @@ public class BasicGameApp implements Runnable, KeyListener {
 	{
       //calls the move( ) code in the objects
 		Mario1.move();
-
+        crashing();
 	}
+
+    public void crashing(){
+        //check to see if my astro's crash into each other
+        if(Mario1.hitbox.intersects(pipe1.hitbox)){
+            System.out.println("CRASH!!");
+            Mario1.xpos = Mario1.xpos-50;
+        }
+
+        if(Mario1.hitbox.intersects(pipe2.hitbox)){
+            System.out.println("CRASH!!");
+            Mario1.xpos = Mario1.xpos-50;
+        }
+
+    }
 	
    //Pauses or sleeps the computer for the amount specified in milliseconds
    public void pause(int time ){
@@ -154,6 +173,11 @@ public class BasicGameApp implements Runnable, KeyListener {
       //draw the image of the astronaut
         g.drawImage(backgroundPic, 0, 0, WIDTH, HEIGHT, null);
         g.drawImage(MarioPic, Mario1.xpos, Mario1.ypos, Mario1.width, Mario1.height, null);
+
+        g.drawRect(pipe1.hitbox.x, pipe1.hitbox.y, pipe1.hitbox.width, 100);
+        g.drawRect(pipe2.hitbox.x, pipe2.hitbox.y, pipe2.hitbox.width, 200);
+        /*gives a visual of how the hitbox looks */
+        g.drawRect(Mario1.hitbox.x, Mario1.hitbox.y, Mario1.hitbox.width, Mario1.hitbox.height);
 
 		g.dispose();
 

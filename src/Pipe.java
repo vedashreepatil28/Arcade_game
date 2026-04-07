@@ -14,7 +14,7 @@ public class Pipe {
     public Pipe(int pXpos, int pYpos) {
         xpos = pXpos;
         ypos = pYpos;
-        width = 60;
+        width = 70;
         height = 60;
         isAlive = true;
 
