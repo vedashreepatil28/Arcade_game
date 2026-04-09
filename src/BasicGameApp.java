@@ -50,6 +50,8 @@ public class BasicGameApp implements Runnable, KeyListener {
     private Mario Mario1;
     private Pipe pipe1;
     private Pipe pipe2;
+    private Pipe pipeteleport;
+    private Pipe pipeteleport2;
 
 
    // Main method definition
@@ -72,12 +74,20 @@ public class BasicGameApp implements Runnable, KeyListener {
       //create (construct) the objects needed for the game and load up 
         backgroundPic = Toolkit.getDefaultToolkit().getImage("background.png");
         Mario1 = new Mario(10,100);
-        pipe1 = new Pipe(170, 510);
+        pipe1 = new Pipe(170, 550);
         pipe1.height = 200;
         pipe1.hitbox = new Rectangle(pipe1.xpos, pipe1.ypos, pipe1.width, pipe1.height);
-        pipe2 = new Pipe(570, 408);
+        pipe2 = new Pipe(570, 448);
         pipe2.height = 400;
         pipe2.hitbox = new Rectangle(pipe2.xpos, pipe2.ypos, pipe2.width, pipe2.height);
+
+        pipeteleport = new Pipe(170, 510);
+        pipeteleport.height = 50;
+        pipeteleport.hitbox = new Rectangle(pipeteleport.xpos, pipeteleport.ypos, pipeteleport.width, pipeteleport.height);
+
+        pipeteleport2 = new Pipe(570, 408);
+        pipeteleport2.height = 50;
+        pipeteleport2.hitbox = new Rectangle(pipeteleport2.xpos, pipeteleport2.ypos, pipeteleport2.width, pipeteleport2.height);
 
         MarioPic = Toolkit.getDefaultToolkit().getImage("mario.png"); //load the picture
 
@@ -123,6 +133,19 @@ public class BasicGameApp implements Runnable, KeyListener {
         if(Mario1.hitbox.intersects(pipe2.hitbox)){
             System.out.println("CRASH!!");
             Mario1.xpos = Mario1.xpos-50;
+        }
+
+        if(Mario1.hitbox.intersects(pipeteleport2.hitbox)){
+            System.out.println("TELEPORT");
+            Mario1.xpos = 170;
+            Mario1.ypos = 435;
+        }
+
+        if(Mario1.hitbox.intersects(pipeteleport.hitbox)){
+            System.out.println("TELEPORT");
+
+            Mario1.xpos = 570;
+            Mario1.ypos = 335;
         }
 
     }
@@ -181,6 +204,9 @@ public class BasicGameApp implements Runnable, KeyListener {
         g.drawRect(pipe1.hitbox.x, pipe1.hitbox.y, pipe1.hitbox.width, pipe1.hitbox.height);
         g.drawRect(pipe2.hitbox.x, pipe2.hitbox.y, pipe2.hitbox.width, pipe2.hitbox.height);
         /*gives a visual of how the hitbox looks */
+        g.drawRect(pipeteleport.hitbox.x, pipeteleport.hitbox.y, pipeteleport.hitbox.width, pipeteleport.hitbox.height);
+        g.drawRect(pipeteleport2.hitbox.x, pipeteleport2.hitbox.y, pipeteleport2.hitbox.width, pipeteleport2.hitbox.height);
+
         g.drawRect(Mario1.hitbox.x, Mario1.hitbox.y, Mario1.hitbox.width, Mario1.hitbox.height);
 
 		g.dispose();
