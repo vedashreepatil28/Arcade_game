@@ -35,6 +35,7 @@ public class BasicGameApp implements Runnable, KeyListener {
 	final int WIDTH = 1000;
 	final int HEIGHT = 700;
 
+
    //Declare the variables needed for the graphics
 	public JFrame frame;
 	public Canvas canvas;
@@ -43,6 +44,7 @@ public class BasicGameApp implements Runnable, KeyListener {
 	public BufferStrategy bufferStrategy;
 	public Image MarioPic;
     public Image backgroundPic;
+    public Image coin;
 
    //Declare the objects used in the program
    //These are things that are made up of more than one variable type
@@ -52,6 +54,7 @@ public class BasicGameApp implements Runnable, KeyListener {
     private Pipe pipe2;
     private Pipe pipeteleport;
     private Pipe pipeteleport2;
+    private bricks brick1;
 
 
    // Main method definition
@@ -73,6 +76,8 @@ public class BasicGameApp implements Runnable, KeyListener {
       //variable and objects
       //create (construct) the objects needed for the game and load up 
         backgroundPic = Toolkit.getDefaultToolkit().getImage("background.png");
+        coin = Toolkit.getDefaultToolkit().getImage("coin.png");
+
         Mario1 = new Mario(10,100);
         pipe1 = new Pipe(170, 550);
         pipe1.height = 200;
@@ -80,6 +85,11 @@ public class BasicGameApp implements Runnable, KeyListener {
         pipe2 = new Pipe(570, 448);
         pipe2.height = 400;
         pipe2.hitbox = new Rectangle(pipe2.xpos, pipe2.ypos, pipe2.width, pipe2.height);
+
+        brick1 = new bricks(150,205);
+        brick1.height = 75;
+        brick1.hitbox = new Rectangle(brick1.xpos, brick1.ypos, brick1.width, brick1.height);
+
 
         pipeteleport = new Pipe(170, 510);
         pipeteleport.height = 50;
@@ -123,6 +133,8 @@ public class BasicGameApp implements Runnable, KeyListener {
         crashing();
 	}
 
+
+
     public void crashing(){
         //check to see if my astro's crash into each other
         if(Mario1.hitbox.intersects(pipe1.hitbox)){
@@ -145,11 +157,7 @@ public class BasicGameApp implements Runnable, KeyListener {
             System.out.println("TELEPORT");
 
             Mario1.xpos = 570;
-            Mario1.ypos = 335;
-        }
-
-        if (Mario1.ypos == pipe1.ypos) {
-        Mario1.ypos = pipe1.ypos+1;
+            Mario1.ypos = pipeteleport.ypos - 250;
         }
 
     }
@@ -203,6 +211,7 @@ public class BasicGameApp implements Runnable, KeyListener {
 
       //draw the image of the astronaut
         g.drawImage(backgroundPic, 0, 0, WIDTH, HEIGHT, null);
+        g.drawImage(coin,150, 190,75,75, null);
         g.drawImage(MarioPic, Mario1.xpos, Mario1.ypos, Mario1.width, Mario1.height, null);
 
         g.drawRect(pipe1.hitbox.x, pipe1.hitbox.y, pipe1.hitbox.width, pipe1.hitbox.height);
@@ -228,8 +237,8 @@ public class BasicGameApp implements Runnable, KeyListener {
         System.out.println("key typed " + e.getKeyCode());
         if (e.getKeyCode()==38){
             System.out.println("pressed up arrow");
-            // astro.ypos = astro.ypos-20;
-            Mario1.dy= -5;
+            Mario1.vSpeed = -10;
+            Mario1.onGround = false;
         }
         if (e.getKeyCode()==40){
             System.out.println("pressed down arrow");

@@ -12,6 +12,12 @@ public class Mario {
     public boolean isAlive;            //a boolean to denote if the hero is alive or dead.
     public Rectangle hitbox;
 
+    public double y = 100;
+    public double vSpeed = 0;
+    public double gravity = 0.5;
+    public boolean onGround = false;
+
+
     // METHOD DEFINITION SECTION
 
     // Constructor Definition
@@ -23,7 +29,7 @@ public class Mario {
     public Mario(int pXpos, int pYpos) {
         xpos = pXpos;
         ypos = pYpos;
-        dx =1;
+        dx =0;
         dy =0;
         width = 60;
         height = 60;
@@ -36,7 +42,34 @@ public class Mario {
         xpos = xpos + dx;
         ypos = ypos + dy;
         hitbox = new Rectangle(xpos, ypos, width, height);
+        Gravity();
+       // jump();
+    }
+
+    public void Gravity(){
+
+        if (!onGround){
+            vSpeed+= gravity;
+        }
+
+        ypos+=vSpeed;
+
+        if (ypos>=550){
+            ypos = 550;
+            vSpeed = 0;
+            onGround = true;
+        }
+
+
 
     }
+
+    //public void jump (){
+      //  if (onGround){
+        //    vSpeed = -10;
+          //  onGround = false;
+        //}
+    //}
+
 
 }
