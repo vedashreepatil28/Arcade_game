@@ -148,6 +148,10 @@ public class BasicGameApp implements Runnable, KeyListener {
             Mario1.ypos = 335;
         }
 
+        if (Mario1.ypos == pipe1.ypos) {
+        Mario1.ypos = pipe1.ypos+1;
+        }
+
     }
 	
    //Pauses or sleeps the computer for the amount specified in milliseconds
