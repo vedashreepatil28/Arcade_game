@@ -86,9 +86,9 @@ public class BasicGameApp implements Runnable, KeyListener {
         pipe2.height = 400;
         pipe2.hitbox = new Rectangle(pipe2.xpos, pipe2.ypos, pipe2.width, pipe2.height);
 
-        brick1 = new bricks(150,205);
-        brick1.height = 75;
-        brick1.hitbox = new Rectangle(brick1.xpos, brick1.ypos, brick1.width, brick1.height);
+        brick1 = new bricks(160,260);
+        brick1.height = 50;
+        brick1.hitbox = new Rectangle(brick1.xpos, brick1.ypos, 100, brick1.height);
 
 
         pipeteleport = new Pipe(170, 510);
@@ -160,6 +160,12 @@ public class BasicGameApp implements Runnable, KeyListener {
             Mario1.ypos = pipeteleport.ypos - 250;
         }
 
+        if(Mario1.hitbox.intersects(brick1.hitbox)){
+            System.out.println("brick 1");
+            Mario1.dy = 0;
+            Mario1.onGround = true;
+        }
+
     }
 	
    //Pauses or sleeps the computer for the amount specified in milliseconds
@@ -221,6 +227,8 @@ public class BasicGameApp implements Runnable, KeyListener {
         g.drawRect(pipeteleport2.hitbox.x, pipeteleport2.hitbox.y, pipeteleport2.hitbox.width, pipeteleport2.hitbox.height);
 
         g.drawRect(Mario1.hitbox.x, Mario1.hitbox.y, Mario1.hitbox.width, Mario1.hitbox.height);
+
+        g.drawRect(brick1.hitbox.x, brick1.hitbox.y, 170, 50);
 
 		g.dispose();
 
