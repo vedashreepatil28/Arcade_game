@@ -55,6 +55,7 @@ public class BasicGameApp implements Runnable, KeyListener {
     private Pipe pipeteleport;
     private Pipe pipeteleport2;
     private bricks brick1;
+    private bricks brick2;
 
 
    // Main method definition
@@ -88,7 +89,13 @@ public class BasicGameApp implements Runnable, KeyListener {
 
         brick1 = new bricks(160,260);
         brick1.height = 50;
-        brick1.hitbox = new Rectangle(brick1.xpos, brick1.ypos, 100, brick1.height);
+        brick1.width = 170;
+        brick1.hitbox = new Rectangle(brick1.xpos, brick1.ypos, brick1.width, brick1.height);
+
+        brick2 = new bricks(325,410);
+        brick2.height = 40;
+        brick2.width = 185;
+        brick2.hitbox = new Rectangle(brick2.xpos, brick2.ypos, brick2.width, brick2.height);
 
 
         pipeteleport = new Pipe(170, 510);
@@ -131,6 +138,7 @@ public class BasicGameApp implements Runnable, KeyListener {
       //calls the move( ) code in the objects
 		Mario1.move();
         crashing();
+        Gravity();
 	}
 
 
@@ -160,11 +168,50 @@ public class BasicGameApp implements Runnable, KeyListener {
             Mario1.ypos = pipeteleport.ypos - 250;
         }
 
-        if(Mario1.hitbox.intersects(brick1.hitbox)){
-            System.out.println("brick 1");
-            Mario1.dy = 0;
+       // if(Mario1.hitbox.intersects(brick1.hitbox)){
+         //   System.out.println("brick 1");
+           // Mario1.dy = 0;
+            //Mario1.onGround = true;
+        //}
+
+
+    }
+
+    public void Gravity(){
+
+        if (!Mario1.onGround){
+            Mario1.vSpeed+= Mario1.gravity;
+        }
+
+        Mario1.ypos+=Mario1.vSpeed;
+
+        if (Mario1.ypos>=550){
+            Mario1.ypos = 550;
+            Mario1.vSpeed = 0;
             Mario1.onGround = true;
         }
+        if(Mario1.hitbox.intersects(brick1.hitbox) && Mario1.onGround==false ){
+            System.out.println("brick 1");
+
+           // Mario1.width = Mario1.width+ 10;
+            Mario1.dy = 0;
+            Mario1.ypos = 201;
+            Mario1.onGround = true;
+            Mario1.isCrashingBeick1 = true;
+        }
+        if (!Mario1.hitbox.intersects(brick1.hitbox) && !Mario1.hitbox.intersects(brick2.hitbox)){
+            Mario1.onGround = false;
+            //Mario1.isCrashingBeick1= false;
+        }
+        if(Mario1.hitbox.intersects(brick2.hitbox)){
+            System.out.println("brick 1");
+            Mario1.dy = 0;
+            Mario1.ypos = 355;
+            Mario1.onGround = true;
+        }
+       // if (!Mario1.hitbox.intersects(brick2.hitbox)){
+         //   Mario1.onGround = false;
+        //}
 
     }
 	
@@ -229,6 +276,7 @@ public class BasicGameApp implements Runnable, KeyListener {
         g.drawRect(Mario1.hitbox.x, Mario1.hitbox.y, Mario1.hitbox.width, Mario1.hitbox.height);
 
         g.drawRect(brick1.hitbox.x, brick1.hitbox.y, 170, 50);
+        g.drawRect(brick2.hitbox.x, brick2.hitbox.y, brick2.width, brick2.height);
 
 		g.dispose();
 

@@ -16,7 +16,7 @@ public class Mario {
     public double vSpeed = 0;
     public double gravity = 0.5;
     public boolean onGround = false;
-
+public boolean isCrashingBeick1;
 
     // METHOD DEFINITION SECTION
 
@@ -34,7 +34,7 @@ public class Mario {
         width = 60;
         height = 60;
         isAlive = true;
-
+isCrashingBeick1= false;
     } // constructor
 
     //The move method.  Everytime this is run (or "called") the hero's x position and y position change by dx and dy
@@ -42,23 +42,28 @@ public class Mario {
         xpos = xpos + dx;
         ypos = ypos + dy;
         hitbox = new Rectangle(xpos, ypos, width, height);
-        Gravity();
+       // Gravity();
        // jump();
     }
 
-    public void Gravity(){
+   // public void Gravity(){
 
-        if (!onGround){
-            vSpeed+= gravity;
-        }
+     //   if (!onGround){
+        //vSpeed+= gravity;
+        //}
 
-        ypos+=vSpeed;
+       // ypos+=vSpeed;
 
-        if (ypos>=550){
-            ypos = 550;
-            vSpeed = 0;
-            onGround = true;
-        }
+      //  if (ypos>=550){
+        //    ypos = 550;
+          //  vSpeed = 0;
+            //onGround = true;
+        //}
+       // if(hitbox.intersects(brick1.hitbox)){
+         //   System.out.println("brick 1");
+           // dy = 0;
+            //onGround = true;
+        //}
 
 
 
@@ -72,4 +77,4 @@ public class Mario {
     //}
 
 
-}
+//}
