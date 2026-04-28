@@ -16,6 +16,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
 import javax.swing.JFrame;
@@ -25,7 +26,7 @@ import javax.swing.JPanel;
 //*******************************************************************************
 // Class Definition Section
 
-public class BasicGameApp implements Runnable, KeyListener {
+public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
    //Variable Definition Section
    //Declare the variables used in the program 
@@ -46,6 +47,15 @@ public class BasicGameApp implements Runnable, KeyListener {
     public Image mushroomPic;
     public Image backgroundPic;
     public Image coin;
+    public Image coin2;
+    public Image coin3;
+    public Image coin4;
+    public Image coin5;
+    public Image coin6;
+    public Image coin7;
+    public Image coin8;
+
+
     public Image turtlePic;
    // public Image mushroom1;
 
@@ -61,6 +71,10 @@ public class BasicGameApp implements Runnable, KeyListener {
     private bricks brick2;
     private Mushroom mushroom1;
     private Turtle turtle1;
+
+    public coins[] coin1;
+    //private coins coi1n;
+
 
 
    // Main method definition
@@ -84,6 +98,9 @@ public class BasicGameApp implements Runnable, KeyListener {
         backgroundPic = Toolkit.getDefaultToolkit().getImage("background.png");
         coin = Toolkit.getDefaultToolkit().getImage("coin.png");
 
+
+
+
         Mario1 = new Mario(10,100);
         mushroom1 = new Mushroom(200,560);
         turtle1 = new Turtle(500, 550);
@@ -106,7 +123,7 @@ public class BasicGameApp implements Runnable, KeyListener {
 
 
         pipeteleport = new Pipe(170, 510);
-        pipeteleport.height = 50;
+        pipeteleport.height = 40;
         pipeteleport.hitbox = new Rectangle(pipeteleport.xpos, pipeteleport.ypos, pipeteleport.width, pipeteleport.height);
 
         pipeteleport2 = new Pipe(570, 408);
@@ -117,6 +134,16 @@ public class BasicGameApp implements Runnable, KeyListener {
         mushroomPic = Toolkit.getDefaultToolkit().getImage("mushroom.png");
         turtlePic = Toolkit.getDefaultToolkit().getImage("Turtle.png");//load the picture
 
+        coin1 = new coins[7];
+
+        coin1[0] =
+        coin1[1] =
+        coin1[2] =
+        coin1[3] =
+        coin1[4] =
+        coin1[5] =
+        coin1[6] =
+        coin1[7] =
 
 
 //
@@ -179,11 +206,9 @@ public class BasicGameApp implements Runnable, KeyListener {
             Mario1.ypos = pipeteleport.ypos - 250;
         }
 
-       // if(Mario1.hitbox.intersects(brick1.hitbox)){
-         //   System.out.println("brick 1");
-           // Mario1.dy = 0;
-            //Mario1.onGround = true;
-        //}
+      // if (){
+
+       //}
 
 
     }
@@ -201,23 +226,24 @@ public class BasicGameApp implements Runnable, KeyListener {
             Mario1.vSpeed = 0;
             Mario1.onGround = true;
         }
-        if(Mario1.hitbox.intersects(brick1.hitbox) && Mario1.onGround==false ){
-            System.out.println("brick 1");
+        if(Mario1.hitbox.intersects(brick1.hitbox) ){
+            System.out.println("on brick 1");
 
-           // Mario1.width = Mario1.width+ 10;
+            // Mario1.width = Mario1.width+ 10;
             Mario1.dy = 0;
-            Mario1.ypos = 201;
+            Mario1.ypos = brick1.ypos-Mario1.height+1;
+            System.out.println(brick1.ypos);
             Mario1.onGround = true;
-            Mario1.isCrashingBeick1 = true;
         }
+
         if (!Mario1.hitbox.intersects(brick1.hitbox) && !Mario1.hitbox.intersects(brick2.hitbox)){
             Mario1.onGround = false;
             //Mario1.isCrashingBeick1= false;
         }
         if(Mario1.hitbox.intersects(brick2.hitbox)){
-            System.out.println("brick 1");
+            System.out.println("brick 2");
             Mario1.dy = 0;
-            Mario1.ypos = 355;
+            Mario1.ypos = brick2.ypos-Mario1.height+1;
             Mario1.onGround = true;
         }
        // if (!Mario1.hitbox.intersects(brick2.hitbox)){
@@ -277,7 +303,20 @@ public class BasicGameApp implements Runnable, KeyListener {
         g.drawImage(backgroundPic, 0, 0, WIDTH, HEIGHT, null);
         g.drawImage(mushroomPic, mushroom1.xpos, mushroom1.ypos, mushroom1.width, mushroom1.height, null);
         g.drawImage(turtlePic, turtle1.xpos, turtle1.ypos, turtle1.width, turtle1.height, null);
-        g.drawImage(coin,150, 190,75,75, null);
+      if (!Mario1.hitbox.intersects(coi1n.hitbox)) {
+          g.drawImage(coin, 150, 190, 55, 55, null);}
+
+      if (!Mario1.hitbox.intersects(coi2n.hitbox)) {
+            g.drawImage(coin2, 350, 360, 55, 55, null);}
+
+      if (!Mario1.hitbox.intersects(coi3n.hitbox)) {
+            g.drawImage(coin3,680, 360,55,55, null);}
+
+        g.drawImage(coin4,785, 360,55,55, null);
+        g.drawImage(coin5,950, 360,55,55, null);
+        g.drawImage(coin6,150, 190,55,55, null);
+        g.drawImage(coin7,150, 190,55,55, null);
+        g.drawImage(coin8,150, 190,55,55, null);
         g.drawImage(MarioPic, Mario1.xpos, Mario1.ypos, Mario1.width, Mario1.height, null);
 
         g.drawRect(pipe1.hitbox.x, pipe1.hitbox.y, pipe1.hitbox.width, pipe1.hitbox.height);
@@ -303,11 +342,12 @@ public class BasicGameApp implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("key typed " + e.getKeyCode());
+       // System.out.println("key typed " + e.getKeyCode());
         if (e.getKeyCode()==38){
             System.out.println("pressed up arrow");
             Mario1.vSpeed = -10;
             Mario1.onGround = false;
+            Mario1.ypos--;
         }
         if (e.getKeyCode()==40){
             System.out.println("pressed down arrow");
@@ -348,6 +388,35 @@ public class BasicGameApp implements Runnable, KeyListener {
             // astro.ypos = astro.ypos-20;
             Mario1.dx= 0;
         }
+
+    }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        System.out.println(e.getPoint());
+        Mario1.xpos =e.getX();
+        Mario1.ypos = e.getY();
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        System.out.println("Entered!!!");
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+
 
     }
 
