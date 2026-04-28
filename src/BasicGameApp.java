@@ -43,8 +43,11 @@ public class BasicGameApp implements Runnable, KeyListener {
    
 	public BufferStrategy bufferStrategy;
 	public Image MarioPic;
+    public Image mushroomPic;
     public Image backgroundPic;
     public Image coin;
+    public Image turtlePic;
+   // public Image mushroom1;
 
    //Declare the objects used in the program
    //These are things that are made up of more than one variable type
@@ -56,6 +59,8 @@ public class BasicGameApp implements Runnable, KeyListener {
     private Pipe pipeteleport2;
     private bricks brick1;
     private bricks brick2;
+    private Mushroom mushroom1;
+    private Turtle turtle1;
 
 
    // Main method definition
@@ -80,6 +85,8 @@ public class BasicGameApp implements Runnable, KeyListener {
         coin = Toolkit.getDefaultToolkit().getImage("coin.png");
 
         Mario1 = new Mario(10,100);
+        mushroom1 = new Mushroom(200,560);
+        turtle1 = new Turtle(500, 550);
         pipe1 = new Pipe(170, 550);
         pipe1.height = 200;
         pipe1.hitbox = new Rectangle(pipe1.xpos, pipe1.ypos, pipe1.width, pipe1.height);
@@ -107,6 +114,8 @@ public class BasicGameApp implements Runnable, KeyListener {
         pipeteleport2.hitbox = new Rectangle(pipeteleport2.xpos, pipeteleport2.ypos, pipeteleport2.width, pipeteleport2.height);
 
         MarioPic = Toolkit.getDefaultToolkit().getImage("mario.png"); //load the picture
+        mushroomPic = Toolkit.getDefaultToolkit().getImage("mushroom.png");
+        turtlePic = Toolkit.getDefaultToolkit().getImage("Turtle.png");//load the picture
 
 
 
@@ -139,6 +148,8 @@ public class BasicGameApp implements Runnable, KeyListener {
 		Mario1.move();
         crashing();
         Gravity();
+        mushroom1.move();
+        turtle1.move();
 	}
 
 
@@ -264,6 +275,8 @@ public class BasicGameApp implements Runnable, KeyListener {
 
       //draw the image of the astronaut
         g.drawImage(backgroundPic, 0, 0, WIDTH, HEIGHT, null);
+        g.drawImage(mushroomPic, mushroom1.xpos, mushroom1.ypos, mushroom1.width, mushroom1.height, null);
+        g.drawImage(turtlePic, turtle1.xpos, turtle1.ypos, turtle1.width, turtle1.height, null);
         g.drawImage(coin,150, 190,75,75, null);
         g.drawImage(MarioPic, Mario1.xpos, Mario1.ypos, Mario1.width, Mario1.height, null);
 
