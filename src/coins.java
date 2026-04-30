@@ -3,7 +3,7 @@ import java.awt.*;
 public class coins { public String name;                //holds the name of the hero
     public int xpos;                //the x position
     public int ypos;                //the y position
-                       //the speed of the hero in the y direction
+    Image image;
     public int width;
     public int height;
     public boolean isAlive;            //a boolean to denote if the hero is alive or dead.
