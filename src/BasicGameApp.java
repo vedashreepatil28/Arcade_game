@@ -46,14 +46,14 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 	public Image MarioPic;
     public Image mushroomPic;
     public Image backgroundPic;
+    public Image gameOver;
 
     public Image turtlePic;
     public Image squishedturtlePic;
-   // public Image mushroom1;
+    public Image start;
 
    //Declare the objects used in the program
    //These are things that are made up of more than one variable type
-	private Astronaut astro;
     private Mario Mario1;
     private Pipe pipe1;
     private Pipe pipe2;
@@ -69,11 +69,9 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     private Mushroom mushroom1;
     private Mushroom goodMushroom;
     private Turtle turtle1;
+    private startScreen pressStart;
 
     public coins[] coin;
-
-    //private coins coi1n;
-
 
 
    // Main method definition
@@ -91,33 +89,42 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 	public BasicGameApp() {
       
       setUpGraphics();
-       
+
+
       //variable and objects
       //create (construct) the objects needed for the game and load up 
         backgroundPic = Toolkit.getDefaultToolkit().getImage("background.png");
-       // coins= Toolkit.getDefaultToolkit().getImage("coin.png");
+        start = Toolkit.getDefaultToolkit().getImage("start.png");
+        gameOver = Toolkit.getDefaultToolkit().getImage("gameOver.png");
 
 
-
-
-
+        pressStart = new startScreen();
+        //the start screen that disappears when the mouse enters
         Mario1 = new Mario(10,100);
+        //the main character
         mushroom1 = new Mushroom(200,560);
-        goodMushroom = new Mushroom(200,210);
+        //mushroom that shrinks mario
+        goodMushroom = new Mushroom(405,360);
         goodMushroom.width = 50;
         goodMushroom.height = 50;
+        goodMushroom.hitbox = new Rectangle(goodMushroom.xpos, goodMushroom.ypos, goodMushroom.width, goodMushroom.height);
+        //mushroom that makes you grow big
         turtle1 = new Turtle(500, 550);
+        //the turtle that goes in its shell when you hit it
         pipe1 = new Pipe(170, 550);
         pipe1.height = 200;
         pipe1.hitbox = new Rectangle(pipe1.xpos, pipe1.ypos, pipe1.width, pipe1.height);
+        //the first pipe which if you hit from the side, you will bounce off
         pipe2 = new Pipe(570, 448);
         pipe2.height = 400;
         pipe2.hitbox = new Rectangle(pipe2.xpos, pipe2.ypos, pipe2.width, pipe2.height);
+        //same as the first but for the longer one
 
         brick1 = new bricks(160,260);
         brick1.height = 40;
         brick1.width = 150;
         brick1.hitbox = new Rectangle(brick1.xpos, brick1.ypos, brick1.width, brick1.height);
+        //this along with the following bricks are the the bricks floating in air which mario can stand on
 
         brick2 = new bricks(325,410);
         brick2.height = 40;
@@ -155,6 +162,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         pipeteleport = new Pipe(170, 510);
         pipeteleport.height = 40;
         pipeteleport.hitbox = new Rectangle(pipeteleport.xpos, pipeteleport.ypos, pipeteleport.width, pipeteleport.height);
+        //this along with the next one defide the hitboxed of the top of the pipes which can be used to teleport to the other pipe.
 
         pipeteleport2 = new Pipe(570, 408);
         pipeteleport2.height = 50;
@@ -164,16 +172,44 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         mushroomPic = Toolkit.getDefaultToolkit().getImage("mushroom.png");
         turtlePic = Toolkit.getDefaultToolkit().getImage("Turtle.png");//load the picture
         squishedturtlePic = Toolkit.getDefaultToolkit().getImage("squished turtle.png");//load the picture
-
+        //this sets the image of the characters
 
         coin = new coins[8];
+        //this is my array which i use to make pictures of 8 coins
         for (int i = 0; i < coin.length; i++) {
             coin[i] = new coins();
             coin[i].image = Toolkit.getDefaultToolkit().getImage("coin.png");
             coin[i].hitbox = new Rectangle(coin[i].xpos, coin[i].ypos, coin[i].width, coin[i].height);
-
+            coin[i].hitbox.width = 55;
+            coin[i].hitbox.height = 55;
         }
+        //creates the images
 
+        coin[0].xpos = 320;
+        coin[0].ypos = 360;
+        coin[0].hitbox = new Rectangle(coin[0].xpos, coin[0].ypos, coin[0].width, coin[0].height);
+        coin[1].xpos = 675;
+        coin[1].ypos = 360;
+        coin[1].hitbox = new Rectangle(coin[1].xpos, coin[1].ypos, coin[1].width, coin[1].height);
+        coin[2].xpos = 920;
+        coin[2].ypos = 360;
+        coin[2].hitbox = new Rectangle(coin[2].xpos, coin[2].ypos, coin[2].width, coin[2].height);
+        coin[3].xpos = 150;
+        coin[3].ypos = 210;
+        coin[3].hitbox = new Rectangle(coin[3].xpos, coin[3].ypos, coin[3].width, coin[3].height);
+        coin[4].xpos = 750;
+        coin[4].ypos = 120;
+        coin[4].hitbox = new Rectangle(coin[4].xpos, coin[4].ypos, coin[4].width, coin[4].height);
+        coin[5].xpos = 680;
+        coin[5].ypos = 120;
+        coin[5].hitbox = new Rectangle(coin[5].xpos, coin[5].ypos, coin[5].width, coin[5].height);
+        coin[6].xpos = 470;
+        coin[6].ypos = 360;
+        coin[6].hitbox = new Rectangle(coin[6].xpos, coin[6].ypos, coin[6].width, coin[6].height);
+        coin[7].xpos = 800;
+        coin[7].ypos = 210;
+        coin[7].hitbox = new Rectangle(coin[7].xpos, coin[7].ypos, coin[7].width, coin[7].height);
+        //defines the location of the coins and what their hitbox is.
 //
     }// BasicGameApp()
 
@@ -204,14 +240,15 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         crashing();
         Gravity();
         mushroom1.move();
-      //  goodMushroom.move();
         turtle1.move();
+        //calls characters so they can move
+
 	}
 
 
 
     public void crashing(){
-        //check to see if my astro's crash into each other
+        //this is where all the crashes are defined, as in the intersections
         if(Mario1.hitbox.intersects(pipe1.hitbox)){
             System.out.println("CRASH!!");
             Mario1.xpos = Mario1.xpos-50;
@@ -221,6 +258,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             System.out.println("CRASH!!");
             Mario1.xpos = Mario1.xpos-50;
         }
+        //this and the one above bounces the mario off the sides of the pipes
 
         if(Mario1.hitbox.intersects(pipeteleport2.hitbox)){
             System.out.println("TELEPORT");
@@ -234,25 +272,62 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             Mario1.xpos = 570;
             Mario1.ypos = pipeteleport.ypos - 250;
         }
+        //this and the one above can make mario teleport from one pipe to the other
+
+        if (Mario1.hitbox.intersects(coin[0].hitbox)) {
+        coin[0].isAlive=false;
+            System.out.println("collected 1 coin");
+        }
+        if (Mario1.hitbox.intersects(coin[1].hitbox)) {
+            coin[1].isAlive=false;
+            System.out.println("collected 1 coin");
+        }
+        if (Mario1.hitbox.intersects(coin[2].hitbox)) {
+            coin[2].isAlive=false;
+            System.out.println("collected 1 coin");
+        }
+        if (Mario1.hitbox.intersects(coin[3].hitbox)) {
+            coin[3].isAlive=false;
+            System.out.println("collected 1 coin");
+        }
+        if (Mario1.hitbox.intersects(coin[4].hitbox)) {
+            coin[4].isAlive=false;
+            System.out.println("collected 1 coin");
+        }
+        if (Mario1.hitbox.intersects(coin[5].hitbox)) {
+            coin[5].isAlive=false;
+            System.out.println("collected 1 coin");
+        }
+        if (Mario1.hitbox.intersects(coin[6].hitbox)) {
+            coin[6].isAlive=false;
+            System.out.println("collected 1 coin");
+        }
+        if (Mario1.hitbox.intersects(coin[7].hitbox)) {
+            coin[7].isAlive=false;
+            System.out.println("collected 1 coin");
+        }
+        //this and coins above define the is alive as false so the coins disappear after intersecting mario
 
         if(Mario1.hitbox.intersects(mushroom1.hitbox)){
-           System.out.println("bad luck");
+            System.out.println("bad luck");
+            Mario1.height = Mario1.height-10;
+            Mario1.width = Mario1.width-10;
 
-            Mario1.xpos = 570;
-            Mario1.ypos = pipeteleport.ypos - 250;
         }
-
-      //if (Mario1.hitbox.intersects(goodMushroom.hitbox)){
-        //    Mario1.height = 70;
-          //  Mario1.width = 70;
-        //}
+        //the mario grows smaller when it intersect the moving mushroom.
 
 
+      if (Mario1.hitbox.intersects(goodMushroom.hitbox)){
+            Mario1.height = 70;
+            Mario1.width = 70;
+            Mario1.hitbox = new Rectangle(Mario1.xpos, Mario1.ypos, Mario1.width, Mario1.height);
+        }
+      //if intersect the green mushroom, mario grows
 
     }
 
     public void Gravity(){
-
+        //this makes it so the mario falls when he is in mid-air.
         if (!Mario1.onGround){
             Mario1.vSpeed+= Mario1.gravity;
         }
@@ -264,8 +339,9 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             Mario1.vSpeed = 0;
             Mario1.onGround = true;
         }
+
+        //this and the following if statements make it so there is no gravity on the bricks.
         if(Mario1.hitbox.intersects(brick1.hitbox) ){
-            System.out.println("on brick 1");
             Mario1.dy = 0;
             Mario1.ypos = brick1.ypos-Mario1.height+1;
             System.out.println(brick1.ypos);
@@ -277,37 +353,31 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
         }
         if(Mario1.hitbox.intersects(brick2.hitbox)){
-            System.out.println("brick 2");
             Mario1.dy = 0;
             Mario1.ypos = brick2.ypos-Mario1.height+1;
             Mario1.onGround = true;
         }
         if(Mario1.hitbox.intersects(brick3.hitbox)){
-            System.out.println("brick 2");
             Mario1.dy = 0;
             Mario1.ypos = brick3.ypos-Mario1.height+1;
             Mario1.onGround = true;
         }
         if(Mario1.hitbox.intersects(brick4.hitbox)){
-            System.out.println("brick 2");
             Mario1.dy = 0;
             Mario1.ypos = brick4.ypos-Mario1.height+1;
             Mario1.onGround = true;
         }
         if(Mario1.hitbox.intersects(brick5.hitbox)){
-            System.out.println("brick 2");
             Mario1.dy = 0;
             Mario1.ypos = brick5.ypos-Mario1.height+1;
             Mario1.onGround = true;
         }
         if(Mario1.hitbox.intersects(brick6.hitbox)){
-            System.out.println("brick 2");
             Mario1.dy = 0;
             Mario1.ypos = brick6.ypos-Mario1.height+1;
             Mario1.onGround = true;
         }
         if(Mario1.hitbox.intersects(brick7.hitbox)){
-            System.out.println("brick 2");
             Mario1.dy = 0;
             Mario1.ypos = brick7.ypos-Mario1.height+1;
             Mario1.onGround = true;
@@ -337,6 +407,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
       // and trap input events (Mouse and Keyboard events)
       canvas = new Canvas();
       canvas.addKeyListener(this);
+      canvas.addMouseListener(this);
       canvas.setBounds(0, 0, WIDTH, HEIGHT);
       canvas.setIgnoreRepaint(true);
    
@@ -362,41 +433,36 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 		Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 		g.clearRect(0, 0, WIDTH, HEIGHT);
 
-      //draw the image of the astronaut
+      //draw the image and the hitboxes of the characters and objects and background
         g.drawImage(backgroundPic, 0, 0, WIDTH, HEIGHT, null);
+
         g.drawImage(mushroomPic, mushroom1.xpos, mushroom1.ypos, mushroom1.width, mushroom1.height, null);
         g.drawRect(mushroom1.hitbox.x, mushroom1.hitbox.y, mushroom1.hitbox.width, mushroom1.hitbox.height);
+        //image and hitbox of mushroom character
+
         if(!Mario1.hitbox.intersects(turtle1.hitbox) && turtle1.isAlive ==true){
         g.drawImage(turtlePic, turtle1.xpos, turtle1.ypos, turtle1.width, turtle1.height, null);}
         if(Mario1.hitbox.intersects(turtle1.hitbox) || turtle1.isAlive == false ){
             g.drawImage(squishedturtlePic, turtle1.xpos, turtle1.ypos, turtle1.width, turtle1.height, null);
             turtle1.isAlive = false;
         }
+        //draws the image and hitbox and chage of image of the turtle.
 
 
-
-        //if (!Mario1.hitbox.intersects(coin1[1].hitbox)) {
-        //  g.drawImage(coin, 150, 190, 55, 55, null);}
-
-      //if (!Mario1.hitbox.intersects(coin1[2].hitbox)) {
-        //    g.drawImage(coin2, 350, 360, 55, 55, null);}
-
-      //if (!Mario1.hitbox.intersects(coin1[3].hitbox)) {
-        //    g.drawImage(coin3,680, 360,55,55, null);}
-
-
+        //draws image of mario
         g.drawImage(MarioPic, Mario1.xpos, Mario1.ypos, Mario1.width, Mario1.height, null);
+
+        /*gives a visual of how the hitbox looks */
         g.drawRect(turtle1.hitbox.x, turtle1.hitbox.y, turtle1.hitbox.width, turtle1.hitbox.height);
 
         g.drawRect(pipe1.hitbox.x, pipe1.hitbox.y, pipe1.hitbox.width, pipe1.hitbox.height);
         g.drawRect(pipe2.hitbox.x, pipe2.hitbox.y, pipe2.hitbox.width, pipe2.hitbox.height);
-        /*gives a visual of how the hitbox looks */
         g.drawRect(pipeteleport.hitbox.x, pipeteleport.hitbox.y, pipeteleport.hitbox.width, pipeteleport.hitbox.height);
         g.drawRect(pipeteleport2.hitbox.x, pipeteleport2.hitbox.y, pipeteleport2.hitbox.width, pipeteleport2.hitbox.height);
 
         g.drawRect(Mario1.hitbox.x, Mario1.hitbox.y, Mario1.hitbox.width, Mario1.hitbox.height);
         g.drawRect(goodMushroom.hitbox.x, goodMushroom.hitbox.y, goodMushroom.hitbox.width, goodMushroom.hitbox.height);
-
+        g.drawRect(mushroom1.hitbox.x, mushroom1.hitbox.y, mushroom1.hitbox.width, mushroom1.hitbox.height);
 
         g.drawRect(brick1.hitbox.x, brick1.hitbox.y, brick1.width, brick1.height);
         g.drawRect(brick2.hitbox.x, brick2.hitbox.y, brick2.width, brick2.height);
@@ -406,17 +472,45 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         g.drawRect(brick6.hitbox.x, brick6.hitbox.y, brick6.width, brick6.height);
         g.drawRect(brick7.hitbox.x, brick7.hitbox.y, brick7.width, brick7.height);
 
-        g.drawImage(coin[0].image,320, 360,55,55, null);
-        g.drawImage(coin[1].image,675, 360,55,55, null);
-        g.drawImage(coin[2].image,920, 360,55,55, null);
-        g.drawImage(coin[3].image,150, 210,55,55, null);
-        g.drawImage(coin[4].image,750, 120,55,55, null);
-        g.drawImage(coin[5].image,680, 120,55,55, null);
-        g.drawImage(coin[6].image,470, 360,55,55, null);
-        g.drawImage(coin[7].image,800, 210,55,55, null);
+        //draws the coins if they are alive
+        if (coin[0].isAlive==true) {
+            g.drawImage(coin[0].image, coin[0].xpos, coin[0].ypos, 55, 55, null);
+        }
+        if (coin[1].isAlive==true) {
+        g.drawImage(coin[1].image,coin[1].xpos, coin[1].ypos,55,55, null);}
+        if (coin[2].isAlive==true) {
+        g.drawImage(coin[2].image,coin[2].xpos, coin[2].ypos,55,55, null);}
+        if (coin[3].isAlive==true) {
+        g.drawImage(coin[3].image,coin[3].xpos, coin[3].ypos,55,55, null);}
+        if (coin[4].isAlive==true) {
+        g.drawImage(coin[4].image,coin[4].xpos, coin[4].ypos,55,55, null);}
+        if (coin[5].isAlive==true) {
+        g.drawImage(coin[5].image,coin[5].xpos, coin[5].ypos,55,55, null);}
+        if (coin[6].isAlive==true) {
+        g.drawImage(coin[6].image,coin[6].xpos, coin[6].ypos,55,55, null);}
+        if (coin[7].isAlive==true) {
+        g.drawImage(coin[7].image,coin[7].xpos, coin[7].ypos,55,55, null);}
 
+        //draws the hitboxes of the coins
         g.drawRect(coin[0].hitbox.x, coin[0].hitbox.y, coin[0].hitbox.width, coin[0].hitbox.height);
         g.drawRect(coin[1].hitbox.x, coin[1].hitbox.y, coin[1].hitbox.width, coin[1].hitbox.height);
+        g.drawRect(coin[2].hitbox.x, coin[2].hitbox.y, coin[2].hitbox.width, coin[2].hitbox.height);
+        g.drawRect(coin[3].hitbox.x, coin[3].hitbox.y, coin[3].hitbox.width, coin[3].hitbox.height);
+        g.drawRect(coin[4].hitbox.x, coin[4].hitbox.y, coin[4].hitbox.width, coin[4].hitbox.height);
+        g.drawRect(coin[5].hitbox.x, coin[5].hitbox.y, coin[5].hitbox.width, coin[5].hitbox.height);
+        g.drawRect(coin[6].hitbox.x, coin[6].hitbox.y, coin[6].hitbox.width, coin[6].hitbox.height);
+        g.drawRect(coin[7].hitbox.x, coin[7].hitbox.y, coin[7].hitbox.width, coin[7].hitbox.height);
+
+       //only draws the start image if the mouse hasn't entered
+        if (pressStart.isAlive == true){
+            g.drawImage(start, 0, 0, WIDTH, HEIGHT, null);
+        }
+
+        if (coin[0].isAlive==false && coin[1].isAlive==false && coin[2].isAlive==false && coin[3].isAlive==false && coin[4].isAlive==false && coin[5].isAlive==false && coin[6].isAlive==false && coin[7].isAlive==false){
+            g.drawImage(gameOver, 0, 0, WIDTH, HEIGHT, null);
+
+        }
+        //when all coins are collected the game over screen apears.
 
 
 		g.dispose();
@@ -432,23 +526,23 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     @Override
     public void keyPressed(KeyEvent e) {
        // System.out.println("key typed " + e.getKeyCode());
-        if (e.getKeyCode()==38){
+        if (e.getKeyCode()==38){ // moves mario up by making him jump
             System.out.println("pressed up arrow");
             Mario1.vSpeed = -10;
             Mario1.onGround = false;
             Mario1.ypos--;
         }
-        if (e.getKeyCode()==40){
+        if (e.getKeyCode()==40){ //moves mario down faster
             System.out.println("pressed down arrow");
             // astro.ypos = astro.ypos-20;
             Mario1.dy= 5;
         }
-        if (e.getKeyCode()==39){
+        if (e.getKeyCode()==39){ // moves mario to the right
             System.out.println("pressed right arrow");
             // astro.ypos = astro.ypos-20;
             Mario1.dx= 5;
         }
-        if (e.getKeyCode()==37){
+        if (e.getKeyCode()==37){ //moves mario to the left
             System.out.println("pressed left arrow");
             // astro.ypos = astro.ypos-20;
             Mario1.dx= -5;
@@ -457,6 +551,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        //these are all so that they dont keep moving after the key is released
         if (e.getKeyCode()==38){
             System.out.println(" not pressed up arrow");
             // astro.ypos = astro.ypos-20;
@@ -489,17 +584,18 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         System.out.println(e.getPoint());
         Mario1.xpos =e.getX();
         Mario1.ypos = e.getY();
-
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        //the start screen will disapear when the mouse enters
         System.out.println("Entered!!!");
-
+        pressStart.isAlive = false;
     }
 
     @Override
